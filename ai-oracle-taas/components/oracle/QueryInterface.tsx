@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Send, Settings, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 interface QueryInterfaceProps {
   onSubmitQuery: (query: string, options: QueryOptions) => void
   isLoading: boolean
+  value?: string
+  onChangeQuery?: (text: string) => void
 }
 
 interface QueryOptions {
@@ -23,8 +25,8 @@ interface QueryOptions {
   timeoutMs: number
 }
 
-export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps) {
-  const [query, setQuery] = useState("")
+export function QueryInterface({ onSubmitQuery, isLoading, value, onChangeQuery }: QueryInterfaceProps) {
+  const [internalQuery, setInternalQuery] = useState(value ?? "")
   const [options, setOptions] = useState<QueryOptions>({
     queryType: "fact",
     minerCount: 3,
@@ -33,9 +35,16 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
   })
   const [showAdvanced, setShowAdvanced] = useState(false)
 
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalQuery(value)
+    }
+  }, [value])
+
   const handleSubmit = () => {
-    if (query.trim() && !isLoading) {
-      onSubmitQuery(query.trim(), options)
+    const current = (value !== undefined ? value : internalQuery).trim()
+    if (current && !isLoading) {
+      onSubmitQuery(current, options)
     }
   }
 
@@ -47,46 +56,46 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
   }
 
   return (
-    <Card className="bg-card border-border">
+    <Card className="bg-white/5 backdrop-blur-sm border-white/10">
       <CardHeader>
-        <CardTitle className="text-card-foreground flex items-center gap-2">
-          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+        <CardTitle className="text-white flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400 animate-pulse" />
           Truth Query Interface
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Query Input */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-card-foreground">Your Question</label>
+          <label className="text-sm font-medium text-white">Your Question</label>
           <Textarea
             placeholder="Ask anything... e.g., 'What is the current population of Tokyo?' or 'Explain quantum computing'"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="min-h-[120px] bg-input border-border text-foreground placeholder-muted-foreground focus:border-primary resize-none"
+            value={value !== undefined ? value : internalQuery}
+            onChange={(e) => (onChangeQuery ? onChangeQuery(e.target.value) : setInternalQuery(e.target.value))}
+            className="min-h-[120px] bg-white/5 border-white/10 text-white placeholder-white/50 focus:border-fuchsia-400 focus:ring-0 resize-none"
             maxLength={1000}
           />
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-xs text-white/60">
             <span>Be specific for better results</span>
-            <span>{query.length}/1000</span>
+            <span>{value !== undefined ? value.length : internalQuery.length}/1000</span>
           </div>
         </div>
 
         {/* Query Type */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-card-foreground">Query Type</label>
+          <label className="text-sm font-medium text-white">Query Type</label>
           <Select
             value={options.queryType}
             onValueChange={(value: any) => setOptions({ ...options, queryType: value })}
           >
-            <SelectTrigger className="bg-input border-border text-foreground">
+            <SelectTrigger className="bg-white/5 border-white/10 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-card border-border">
+            <SelectContent className="bg-white/5 border-white/10">
               {Object.entries(queryTypeDescriptions).map(([type, description]) => (
-                <SelectItem key={type} value={type} className="text-card-foreground hover:bg-muted">
+                <SelectItem key={type} value={type} className="text-white hover:bg-white/10">
                   <div className="flex flex-col items-start">
                     <span className="capitalize font-medium">{type}</span>
-                    <span className="text-xs text-muted-foreground">{description}</span>
+                    <span className="text-xs text-white/60">{description}</span>
                   </div>
                 </SelectItem>
               ))}
@@ -97,12 +106,9 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
         {/* Advanced Settings */}
         <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
           <CollapsibleTrigger asChild>
-            <Button
-              variant="ghost"
-              className="w-full justify-between text-muted-foreground hover:text-foreground hover:bg-muted"
-            >
+            <Button variant="ghost" className="w-full justify-between text-white/60 hover:text-white hover:bg-white/10">
               <span className="flex items-center gap-2">
-                <Settings className="w-4 h-4" />
+                <Settings className="w-4 h-4 text-white" />
                 Advanced Settings
               </span>
               <motion.div animate={{ rotate: showAdvanced ? 180 : 0 }} transition={{ duration: 0.2 }}>
@@ -115,8 +121,8 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
             {/* Miner Count */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-card-foreground">Miners to Query</label>
-                <Badge variant="outline" className="border-border text-foreground">
+                <label className="text-sm font-medium text-white">Miners to Query</label>
+                <Badge variant="outline" className="border-white/10 text-white">
                   {options.minerCount}
                 </Badge>
               </div>
@@ -128,14 +134,14 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
                 step={1}
                 className="w-full"
               />
-              <p className="text-xs text-muted-foreground">More miners = higher accuracy but slower response</p>
+              <p className="text-xs text-white/60">More miners = higher accuracy but slower response</p>
             </div>
 
             {/* Consensus Threshold */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-card-foreground">Consensus Threshold</label>
-                <Badge variant="outline" className="border-border text-foreground">
+                <label className="text-sm font-medium text-white">Consensus Threshold</label>
+                <Badge variant="outline" className="border-white/10 text-white">
                   {Math.round(options.consensusThreshold * 100)}%
                 </Badge>
               </div>
@@ -147,14 +153,14 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
                 step={0.05}
                 className="w-full"
               />
-              <p className="text-xs text-muted-foreground">Higher threshold = stricter consensus requirements</p>
+              <p className="text-xs text-white/60">Higher threshold = stricter consensus requirements</p>
             </div>
 
             {/* Timeout */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-card-foreground">Timeout</label>
-                <Badge variant="outline" className="border-border text-foreground">
+                <label className="text-sm font-medium text-white">Timeout</label>
+                <Badge variant="outline" className="border-white/10 text-white">
                   {options.timeoutMs / 1000}s
                 </Badge>
               </div>
@@ -166,7 +172,7 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
                 step={5000}
                 className="w-full"
               />
-              <p className="text-xs text-muted-foreground">Maximum time to wait for miner responses</p>
+              <p className="text-xs text-white/60">Maximum time to wait for miner responses</p>
             </div>
           </CollapsibleContent>
         </Collapsible>
@@ -174,29 +180,29 @@ export function QueryInterface({ onSubmitQuery, isLoading }: QueryInterfaceProps
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
-          disabled={!query.trim() || isLoading}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+          disabled={!(value !== undefined ? value : internalQuery).trim() || isLoading}
+          className="w-full text-white bg-gradient-to-r from-blue-600 via-fuchsia-600 to-pink-600 hover:opacity-90"
           size="lg"
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               Processing Query...
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-white" />
               Submit to Oracle Network
             </div>
           )}
         </Button>
 
         {/* Info */}
-        <div className="flex items-start gap-2 p-3 bg-primary/10 border border-primary/20 rounded-lg">
-          <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-          <div className="text-xs text-foreground">
+        <div className="flex items-start gap-2 p-3 bg-white/5 border border-white/10 rounded-lg">
+          <Info className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400 mt-0.5 flex-shrink-0" />
+          <div className="text-xs text-white">
             <p className="font-medium mb-1">How it works:</p>
-            <p>
+            <p className="text-white/80">
               Your query is sent to multiple AI miners in the Cortensor network. Their responses are analyzed for
               consensus, and hallucinations are detected and filtered out.
             </p>

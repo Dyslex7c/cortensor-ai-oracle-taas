@@ -77,10 +77,10 @@ const topMiners = [
 
 export function TruthDashboard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-gradient-to-r from-blue-500 via-fuchsia-500 to-pink-500 p-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-        <h2 className="text-3xl font-bold text-foreground mb-2">Network Dashboard</h2>
-        <p className="text-muted-foreground">Real-time insights into the Cortensor truth verification network</p>
+        <h2 className="text-3xl font-bold text-white mb-2">Network Dashboard</h2>
+        <p className="text-white/70">Real-time insights into the Cortensor truth verification network</p>
       </motion.div>
 
       {/* Network Stats */}
@@ -92,16 +92,20 @@ export function TruthDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
           >
-            <Card className="bg-card border-border hover:border-primary/20 transition-colors">
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/20 transition-colors">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                    <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                    <p className={`text-sm ${stat.color}`}>{stat.change}</p>
+                    <p className="text-sm text-white/70">{stat.label}</p>
+                    <p className="text-2xl font-bold text-white">{stat.value}</p>
+                    <p
+                      className={`text-sm bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400`}
+                    >
+                      {stat.change}
+                    </p>
                   </div>
-                  <div className={`p-3 rounded-lg bg-muted ${stat.color}`}>
-                    <stat.icon className="w-6 h-6" />
+                  <div className="p-3 rounded-lg bg-white/5">
+                    <stat.icon className="w-6 h-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400" />
                   </div>
                 </div>
               </CardContent>
@@ -117,10 +121,10 @@ export function TruthDashboard() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <Card className="bg-card border-border">
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardHeader>
-              <CardTitle className="text-card-foreground flex items-center gap-2">
-                <Zap className="w-5 h-5 text-primary" />
+              <CardTitle className="text-white flex items-center gap-2">
+                <Zap className="w-5 h-5 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400" />
                 Recent Queries
               </CardTitle>
             </CardHeader>
@@ -131,22 +135,22 @@ export function TruthDashboard() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg border border-border"
+                  className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div className="flex-shrink-0 mt-1">
                     {query.status === "verified" ? (
-                      <CheckCircle className="w-4 h-4 text-primary" />
+                      <CheckCircle className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400" />
                     ) : (
-                      <AlertTriangle className="w-4 h-4 text-destructive" />
+                      <AlertTriangle className="w-4 h-4 text-red-400" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground truncate">{query.query}</p>
+                    <p className="text-sm text-white truncate">{query.query}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <Badge variant={query.status === "verified" ? "default" : "destructive"} className="text-xs">
+                      <Badge className="text-xs bg-white/10 text-white border-white/10">
                         {query.confidence}% confidence
                       </Badge>
-                      <span className="text-xs text-muted-foreground">{query.time}</span>
+                      <span className="text-xs text-white/60">{query.time}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -161,10 +165,10 @@ export function TruthDashboard() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <Card className="bg-card border-border">
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardHeader>
-              <CardTitle className="text-card-foreground flex items-center gap-2">
-                <Globe className="w-5 h-5 text-accent" />
+              <CardTitle className="text-white flex items-center gap-2">
+                <Globe className="w-5 h-5 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400" />
                 Top Miners
               </CardTitle>
             </CardHeader>
@@ -175,22 +179,24 @@ export function TruthDashboard() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-border"
+                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold text-primary">#{index + 1}</span>
+                    <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-fuchsia-300 to-pink-300">
+                        #{index + 1}
+                      </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground">Miner {index + 1}</p>
-                      <p className="text-xs text-muted-foreground">{miner.queries} queries</p>
+                      <p className="text-sm font-medium text-white">Miner {index + 1}</p>
+                      <p className="text-xs text-white/70">{miner.queries} queries</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center gap-1">
-                      <span className="text-sm font-medium text-foreground">⭐ {miner.reputation}</span>
+                      <span className="text-sm font-medium text-white">⭐ {miner.reputation}</span>
                     </div>
-                    <div className="text-xs text-muted-foreground">{miner.accuracy}% accuracy</div>
+                    <div className="text-xs text-white/70">{miner.accuracy}% accuracy</div>
                   </div>
                 </motion.div>
               ))}
@@ -205,10 +211,10 @@ export function TruthDashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <Card className="bg-card border-border">
+        <Card className="bg-white/5 backdrop-blur-sm border-white/10">
           <CardHeader>
-            <CardTitle className="text-card-foreground flex items-center gap-2">
-              <Shield className="w-5 h-5 text-primary" />
+            <CardTitle className="text-white flex items-center gap-2">
+              <Shield className="w-5 h-5 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-fuchsia-400 to-pink-400" />
               Network Health
             </CardTitle>
           </CardHeader>
@@ -216,22 +222,22 @@ export function TruthDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Consensus Rate</span>
-                  <span className="text-foreground">94%</span>
+                  <span className="text-white/70">Consensus Rate</span>
+                  <span className="text-white">94%</span>
                 </div>
                 <Progress value={94} className="h-2" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Network Uptime</span>
-                  <span className="text-foreground">99.9%</span>
+                  <span className="text-white/70">Network Uptime</span>
+                  <span className="text-white">99.9%</span>
                 </div>
                 <Progress value={99.9} className="h-2" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Miner Availability</span>
-                  <span className="text-foreground">87%</span>
+                  <span className="text-white/70">Miner Availability</span>
+                  <span className="text-white">87%</span>
                 </div>
                 <Progress value={87} className="h-2" />
               </div>

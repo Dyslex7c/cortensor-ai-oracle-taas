@@ -19,7 +19,7 @@ export function CTASection() {
   ]
 
   return (
-    <section className="py-24 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+    <section className="py-24 bg-gradient-to-br from-pink-500 via-background to-blue-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
@@ -35,7 +35,7 @@ export function CTASection() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
               viewport={{ once: true }}
-              className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-white border border-primary/20 text-primary text-sm font-medium"
             >
               <Zap className="w-4 h-4 mr-2" />
               Join the Truth Revolution
@@ -50,7 +50,7 @@ export function CTASection() {
               className="text-4xl md:text-6xl font-bold text-foreground leading-tight text-balance"
             >
               Ready to Experience{" "}
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
                 Verified Truth
               </span>
               ?
@@ -62,7 +62,7 @@ export function CTASection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty"
+              className="text-md text-muted-foreground max-w-3xl mx-auto text-pretty"
             >
               Join thousands of researchers, developers, and enterprises who trust our decentralized AI network for
               accurate, hallucination-free responses.
@@ -98,7 +98,7 @@ export function CTASection() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-input border-border text-foreground placeholder-muted-foreground focus:border-primary"
+                  className="bg-white border-border text-foreground placeholder-muted-foreground focus:border-primary"
                 />
                 <Button
                   size="lg"

@@ -28,3 +28,8 @@ next-env.d.ts
 
 backend/logs
 backend/node_modules
+
+*.log
+*.zip
+llm-engine.pid
+system_info.json

@@ -42,7 +42,7 @@ export function HowItWorksSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 text-balance">
-            How <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">It Works</span>
+            How <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">It Works</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
             Our decentralized truth verification process ensures you get the most accurate and reliable AI responses.
@@ -61,7 +61,7 @@ export function HowItWorksSection() {
             >
               {/* Connection Line */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-primary/30 to-transparent transform translate-x-4" />
+                <div className="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-primary/30 to-blue-500 transform translate-x-4" />
               )}
 
               <div className="text-center">
