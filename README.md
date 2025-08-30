@@ -117,6 +117,44 @@ cd installer-main
 
 ## 📊 API Documentation
 
+### Router Connection
+
+Our application seamlessly integrates with the Cortensor network through multiple layers:
+
+```typescript
+const CORTENSOR_ENDPOINT = "http://127.0.0.1:5010"
+const API_TOKEN = "default-dev-token"
+
+async function queryMiner(prompt: string, sessionId: number) {
+  return fetch(`${CORTENSOR_ENDPOINT}/api/v1/completions`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${API_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      session_id: sessionId,
+      prompt,
+      stream: false,
+      timeout: 60
+    })
+  })
+}
+```
+
+### Multi-Miner Strategy
+
+```typescript
+async function getConsensusResponse(query: string) {
+  const minerPromises = Array.from({length: 4}, (_, i) => 
+    queryMiner(query, i + session_id)
+  )
+  
+  const responses = await Promise.allSettled(minerPromises)
+  return analyzeConsensus(responses)
+}
+```
+
 ### Oracle Endpoints
 
 #### Submit Query
